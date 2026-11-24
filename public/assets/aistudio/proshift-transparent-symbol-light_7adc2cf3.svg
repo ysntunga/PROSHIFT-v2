@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="title">
-  <title id="title">PROSHIFT Symbol Transparent (light)</title>
-  <path id="day-shift" fill="#0891B2" d="M 132.66 34 H 236 A 40 40 0 0 1 196 74 H 159.71 A 72 72 0 0 0 132.66 34 Z"/>
-  <path id="night-shift" fill="#4F46E5" d="M 18 222 V 164 A 50 50 0 0 1 68 114 H 97.44 A 72 72 0 0 0 129.39 154 H 70 A 12 12 0 0 0 58 166 V 194 C 58 211 42 222 18 222 Z"/>
-  <path id="core-ribbon" fill="#0F172A" d="M 18 34 H 90 A 58 58 0 0 1 148 92 A 18 18 0 0 0 166 110 H 182 A 56 56 0 0 1 182 222 H 116 A 40 40 0 0 1 156 182 H 182 A 16 16 0 0 0 182 150 H 166 A 58 58 0 0 1 108 92 A 18 18 0 0 0 90 74 H 58 A 40 40 0 0 1 18 34 Z"/>
-</svg>
