@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">PROSHIFT</string>
+    <string name="splash_logo_content_description">PROSHIFT App Logo</string>
+    <string name="splash_tagline_tr">Smart Shift &amp; Duty Assistant</string>
+    <string name="splash_tagline_en">Smart Shift &amp; Duty Assistant</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_calendar">Calendar</string>
+    <string name="nav_timesheet">Payroll</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_match">Match</string>
+
+    <string name="shift_gunduz">Day Shift</string>
+    <string name="shift_gece">Night Shift</string>
+    <string name="shift_sabah">Morning Shift</string>
+    <string name="shift_aksam">Evening Shift</string>
+    <string name="shift_gece8">8h Night</string>
+    <string name="shift_nobet24">24h Duty</string>
+
+    <string name="btn_break_overtime">Break / OT</string>
+    <string name="btn_shift_note">Shift Note</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_export">Export PDF</string>
+</resources>

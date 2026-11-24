@@ -1,0 +1,6 @@
+{
+  "name": "PROSHIFT",
+  "description": "7/24 Profesyonel Vardiya Takip ve Puantaj Asistanı - Brushed Metallic Blue Design System",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

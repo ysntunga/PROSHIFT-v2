@@ -1,0 +1,208 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated PROSHIFT user profile and cloud shift configuration synced across devices.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owning user (immutable)."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Employee display name shown on schedules and PDF timesheets."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Optional Google account email address."
+        },
+        "department": {
+          "type": "string",
+          "description": "Department or unit name."
+        },
+        "professionGroup": {
+          "type": "string",
+          "description": "Profession group identifier used for theme tinting."
+        },
+        "title": {
+          "type": "string",
+          "description": "Job title or role."
+        },
+        "cyclePreset": {
+          "type": "string",
+          "description": "Active shift cycle preset enum name."
+        },
+        "referenceStartDate": {
+          "type": "string",
+          "description": "Cycle anchor start date in ISO-8601 format (YYYY-MM-DD)."
+        },
+        "customSequence": {
+          "type": "array",
+          "description": "Optional custom shift sequence enum names (max 31 entries)."
+        },
+        "appLanguage": {
+          "type": "string",
+          "enum": ["system", "tr", "en"],
+          "description": "App language preference."
+        },
+        "schemaVersion": {
+          "type": "integer",
+          "description": "Schema version number for forward compatibility."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server-assigned creation timestamp (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server-assigned last update timestamp (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "displayName",
+        "department",
+        "cyclePreset",
+        "referenceStartDate",
+        "appLanguage",
+        "schemaVersion",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ShiftOverrideRecord": {
+      "title": "ShiftOverrideRecord",
+      "description": "Per-day custom shift override, overtime entry, or shift note owned by a user.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owning user (immutable)."
+        },
+        "dateIso": {
+          "type": "string",
+          "description": "Calendar date in ISO-8601 format (YYYY-MM-DD), matching the document ID."
+        },
+        "shiftType": {
+          "type": "string",
+          "enum": ["GUNDUZ", "GECE", "SABAH", "AKSAM", "GECE8", "IZIN", "RAPOR", "NOBET24"],
+          "description": "ShiftType enum name."
+        },
+        "overtimeHours": {
+          "type": "number",
+          "description": "Extra overtime hours logged for this date (0 to 24)."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional duty note or remark for this date."
+        },
+        "customStartTime": {
+          "type": "string",
+          "description": "Optional custom shift start time (HH:mm)."
+        },
+        "customEndTime": {
+          "type": "string",
+          "description": "Optional custom shift end time (HH:mm)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server-assigned creation timestamp (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server-assigned last update timestamp (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "dateIso",
+        "shiftType",
+        "overtimeHours",
+        "note",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ColleagueRecord": {
+      "title": "ColleagueRecord",
+      "description": "Matched colleague shift schedule saved under the user's private subcollection.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owning user (immutable)."
+        },
+        "name": {
+          "type": "string",
+          "description": "Colleague display name."
+        },
+        "department": {
+          "type": "string",
+          "description": "Colleague department name."
+        },
+        "cyclePreset": {
+          "type": "string",
+          "description": "Colleague CyclePreset enum name."
+        },
+        "referenceStartDate": {
+          "type": "string",
+          "description": "Colleague cycle anchor start date (YYYY-MM-DD)."
+        },
+        "customSequence": {
+          "type": "array",
+          "description": "Optional custom shift sequence enum names (max 31 entries)."
+        },
+        "sourceLabel": {
+          "type": "string",
+          "description": "Origin tag such as QR or Manual."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server-assigned creation timestamp (FieldValue.serverTimestamp())."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server-assigned last update timestamp (FieldValue.serverTimestamp())."
+        }
+      },
+      "required": [
+        "userId",
+        "name",
+        "department",
+        "cyclePreset",
+        "referenceStartDate",
+        "sourceLabel",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Private per-user PROSHIFT profile and active shift rotation settings."
+    },
+    "/users/{userId}/shift_overrides/{dateKey}": {
+      "schema": {
+        "$ref": "#/entities/ShiftOverrideRecord"
+      },
+      "description": "Per-user custom daily shift overrides, overtime hours, and shift notes keyed by ISO date."
+    },
+    "/users/{userId}/colleagues/{colleagueId}": {
+      "schema": {
+        "$ref": "#/entities/ColleagueRecord"
+      },
+      "description": "Per-user colleague shift profiles imported via QR or manual entry."
+    }
+  }
+}

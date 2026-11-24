@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProShift - Gizlilik Politikası / Privacy Policy</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #081224;
+      --card: #0f1d36;
+      --border: #1e355d;
+      --text: #e6eef8;
+      --muted: #9fb2cc;
+      --accent: #52c3db;
+    }
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+    }
+    h1, h2 {
+      color: #ffffff;
+      margin-top: 1.4em;
+    }
+    h1 {
+      margin-top: 0;
+      color: var(--accent);
+      font-size: 1.75rem;
+    }
+    h2 {
+      font-size: 1.15rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+    }
+    p, li {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+    code {
+      background: #081224;
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: var(--accent);
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 32px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ProShift - Gizlilik Politikası</h1>
+    <p><strong>Son Güncelleme:</strong> 13 Kasım 2026<br />
+    <strong>Uygulama Paketi:</strong> <code>com.aistudio.vardiyadongu.tkvswz</code><br />
+    <strong>İletişim:</strong> yasintunga@gmail.com</p>
+
+    <h2>1. Toplanan ve Saklanan Veriler</h2>
+    <p>ProShift, tamamen kullanıcının kendi vardiya ve puantaj düzenini takip etmesi için tasarlanmıştır. Uygulamaya girdiğiniz tüm bilgiler yalnızca kendi cihazınızda (Android <code>SharedPreferences</code> alanında) saklanır:</p>
+    <ul>
+      <li>Ad, departman, görev unvanı ve vardiya döngü ayarları</li>
+      <li>Vardiya takvimi değişiklikleri, fazla mesai saatleri ve vardiya notları</li>
+      <li>İsteğe bağlı olarak eklenen ekip arkadaşı vardiya kodları ve profil fotoğrafı seçimi</li>
+    </ul>
+
+    <h2>2. Veri Paylaşımı ve Üçüncü Taraf Hizmetler</h2>
+    <p>ProShift, kullanıcı verilerini harici sunuculara göndermez, satmaz ve reklam/analitik amaçlı üçüncü taraf SDK'ları ile paylaşmaz. Puantaj paylaşımı, PDF oluşturma veya JSON yedek aktarımı yalnızca kullanıcının kendi isteğiyle paylaşım butonlarına dokunmasıyla Android sistem paylaşım menüsü üzerinden gerçekleşir.</p>
+
+    <h2>3. Cihaz İzinleri</h2>
+    <ul>
+      <li><strong>Kamera İzni (İsteğe Bağlı):</strong> Yalnızca mesai arkadaşınızın PROSHIFT vardiya QR kodunu okutmak istediğinizde istenir. Görüntüler tamamen cihaz üzerinde (çevrimdışı ML Kit ile) işlenir; fotoğraf, video veya kamera verisi kaydedilmez ve hiçbir sunucuya gönderilmez. Kamera izni verilmeden de galeri görseli, bağlantı veya elle ekleme kullanılabilir.</li>
+      <li><strong>Fotoğraf Seçici (Android Photo Picker):</strong> Profil fotoğrafı veya galeriden QR seçmek istediğinizde Android'in izin gerektirmeyen sistem seçicisi kullanılır; depolama izni talep edilmez.</li>
+      <li><strong>İnternet, Konum ve Rehber:</strong> Uygulama internet erişimi, konum veya rehber izni kullanmaz; tamamen çevrimdışı çalışır.</li>
+    </ul>
+
+    <h2>4. Veri Silme ve Kontrol</h2>
+    <p>Uygulama içerisindeki <strong>Ayarlar &gt; Döngüyü Sıfırla</strong> seçeneğiyle veya cihazınızın uygulama ayarlarından uygulama verilerini temizleyerek tüm kayıtlarınızı kalıcı olarak silebilirsiniz.</p>
+
+    <hr />
+
+    <h1>Privacy Policy (English Summary)</h1>
+    <p><strong>ProShift</strong> (<code>com.aistudio.vardiyadongu.tkvswz</code>) stores shift schedules, overtime records, notes, and user preferences locally on your device using Android <code>SharedPreferences</code>. Optional camera access (<code>CAMERA</code>) is used strictly on-device for offline QR code scanning when adding a colleague's shift schedule; no camera frames or personal data are ever stored on or transmitted to external servers. Optional images are selected via the permission-free Android Photo Picker, and backups/timesheets are exported solely upon explicit user action. For questions or support, contact <a href="mailto:yasintunga@gmail.com" style="color:#52c3db;">yasintunga@gmail.com</a>.</p>
+  </div>
+</body>
+</html>

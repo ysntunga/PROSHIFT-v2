@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">PROSHIFT</string>
+    <string name="splash_logo_content_description">PROSHIFT Uygulama Logosu</string>
+    <string name="splash_tagline_tr">Akıllı Vardiya &amp; Nöbet Asistanı</string>
+    <string name="splash_tagline_en">Akıllı Vardiya &amp; Nöbet Asistanı</string>
+
+    <string name="nav_home">Ana Sayfa</string>
+    <string name="nav_calendar">Takvim</string>
+    <string name="nav_timesheet">Puantaj</string>
+    <string name="nav_settings">Ayarlar</string>
+    <string name="nav_profile">Profil</string>
+    <string name="nav_match">Eşleşme</string>
+
+    <string name="shift_gunduz">Gündüz Nöbeti</string>
+    <string name="shift_gece">Gece Nöbeti</string>
+    <string name="shift_sabah">Sabah Vardiyası</string>
+    <string name="shift_aksam">Akşam Vardiyası</string>
+    <string name="shift_gece8">8s Gece</string>
+    <string name="shift_nobet24">24s Nöbet</string>
+
+    <string name="btn_break_overtime">Mola / Mesai</string>
+    <string name="btn_shift_note">Nöbet Notu</string>
+    <string name="btn_save">Kaydet</string>
+    <string name="btn_cancel">İptal</string>
+    <string name="btn_export">PDF İndir</string>
+</resources>
