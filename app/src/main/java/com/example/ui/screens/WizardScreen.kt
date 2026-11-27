@@ -43,6 +43,7 @@ import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Schedule
@@ -92,7 +93,6 @@ import com.example.ui.components.CustomCycleBuilderSheet
 import com.example.ui.components.ShiftTimePickerSheet
 import com.example.ui.components.TitaniumDatePickerDialog
 import com.example.ui.components.UserAvatarImage
-import com.example.ui.theme.BorderSpecularTop
 import com.example.ui.theme.DynamicTheme
 import com.example.ui.i18n.LocalAppLocale
 import com.example.ui.i18n.LocalIsEnglish
@@ -391,6 +391,7 @@ fun WizardScreen(
                     UserAvatarImage(
                         avatarPath = currentSettings.avatarUriOrPath,
                         contentDescription = trEn(isEn, "Profil", "Profile"),
+                        displayName = currentSettings.employeeName,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -719,21 +720,16 @@ fun WizardScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Surface(
+                    onClick = { wizardStep = 2 },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp)
-                        .clip(RoundedCornerShape(14.dp))
-                        .clickable { wizardStep = 2 }
-                        .shadow(12.dp, RoundedCornerShape(14.dp), ambientColor = dyn.primaryNeon)
-                        .border(1.dp, BorderSpecularTop, RoundedCornerShape(14.dp))
                         .testTag("btn_wizard_step1_next"),
                     shape = RoundedCornerShape(14.dp),
-                    color = Color.Transparent
+                    color = dyn.primaryDeep
                 ) {
                     Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Brush.horizontalGradient(listOf(dyn.primaryNeon, dyn.primaryDeep))),
+                        modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
                         Row(
@@ -939,20 +935,31 @@ fun WizardScreen(
                                         }
                                     }
                                     if (seqPreview.size > 8) {
-                                        Text("+${seqPreview.size - 8}${trEn(isEn, "g", "d")}", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
+                                        Text("+${seqPreview.size - 8}${trEn(isEn, "g", "d")}", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
                                     }
                                     Spacer(modifier = Modifier.weight(1f))
-                                    Text(trEn(isEn, "${seqPreview.size} Gün", "${seqPreview.size} Days"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
+                                    Text(trEn(isEn, "${seqPreview.size} Gün", "${seqPreview.size} Days"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
                                 }
                             }
 
                             val localizedNotice = preset.localizedNotice(isEn)
                             if (isSelected && localizedNotice != null) {
-                                Text(
-                                    text = "⚠️ $localizedNotice",
-                                    fontSize = 10.sp,
-                                    color = dyn.eveningShiftText
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Info,
+                                        contentDescription = null,
+                                        tint = dyn.eveningShiftText,
+                                        modifier = Modifier.size(14.dp)
+                                    )
+                                    Text(
+                                        text = localizedNotice,
+                                        fontSize = 11.sp,
+                                        color = dyn.eveningShiftText
+                                    )
+                                }
                             }
                         }
                     }
@@ -979,21 +986,16 @@ fun WizardScreen(
                     }
 
                     Surface(
+                        onClick = { wizardStep = 3 },
                         modifier = Modifier
                             .weight(2f)
                             .height(50.dp)
-                            .clip(RoundedCornerShape(14.dp))
-                            .clickable { wizardStep = 3 }
-                            .shadow(12.dp, RoundedCornerShape(14.dp), ambientColor = dyn.primaryNeon)
-                            .border(1.dp, BorderSpecularTop, RoundedCornerShape(14.dp))
                             .testTag("btn_wizard_step2_next"),
                         shape = RoundedCornerShape(14.dp),
-                        color = Color.Transparent
+                        color = dyn.primaryDeep
                     ) {
                         Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Brush.horizontalGradient(listOf(dyn.primaryNeon, dyn.primaryDeep))),
+                            modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
                             Row(
@@ -1489,20 +1491,16 @@ fun WizardScreen(
                     }
 
                     Surface(
+                        onClick = { wizardStep = 4 },
                         modifier = Modifier
                             .weight(2f)
                             .height(48.dp)
-                            .clip(RoundedCornerShape(14.dp))
-                            .clickable { wizardStep = 4 }
-                            .border(1.dp, BorderSpecularTop, RoundedCornerShape(14.dp))
                             .testTag("btn_wizard_next"),
                         shape = RoundedCornerShape(14.dp),
-                        color = Color.Transparent
+                        color = dyn.primaryDeep
                     ) {
                         Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Brush.horizontalGradient(listOf(dyn.primaryNeon, dyn.primaryDeep))),
+                            modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -1873,16 +1871,12 @@ fun WizardScreen(
                                 ).show()
                                 viewModel.navigateTo(AppScreen.CALENDAR)
                             }
-                            .shadow(12.dp, RoundedCornerShape(14.dp), ambientColor = dyn.primaryNeon)
-                            .border(1.dp, BorderSpecularTop, RoundedCornerShape(14.dp))
                             .testTag("btn_create_calendar_finish"),
                         shape = RoundedCornerShape(14.dp),
-                        color = Color.Transparent
+                        color = dyn.primaryDeep
                     ) {
                         Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Brush.horizontalGradient(listOf(dyn.primaryNeon, dyn.primaryDeep))),
+                            modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {

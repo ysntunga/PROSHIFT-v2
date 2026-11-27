@@ -75,49 +75,21 @@ data class DynamicThemePalette(
     val dangerAccent: Color = Color(0xFFF87171)
 ) {
     val brushedSurfaceBrush: Brush
-        get() = if (isDark) {
-            Brush.verticalGradient(colors = listOf(surfaceCard, background))
-        } else {
-            Brush.verticalGradient(
-                colors = listOf(surfaceCard, lerp(surfaceCard, surfaceDim, 0.42f))
-            )
-        }
+        get() = Brush.verticalGradient(colors = listOf(surfaceCard, surfaceCard))
 
     val elevatedSurfaceBrush: Brush
-        get() = if (isDark) {
-            Brush.verticalGradient(colors = listOf(surfaceElevated, surfaceCard))
-        } else {
-            Brush.verticalGradient(colors = listOf(surfaceCard, surfaceElevated))
-        }
+        get() = Brush.verticalGradient(colors = listOf(surfaceElevated, surfaceElevated))
 
     val metallicSheenBrush: Brush
-        get() = if (isDark) {
-            Brush.linearGradient(
-                colors = listOf(
-                    surfaceHighlight.copy(alpha = 0.55f),
-                    surfaceCard,
-                    background
-                )
-            )
-        } else {
-            Brush.linearGradient(
-                colors = listOf(
-                    surfaceCard,
-                    surfaceElevated.copy(alpha = 0.65f),
-                    surfaceCard
-                )
-            )
-        }
+        get() = Brush.verticalGradient(colors = listOf(surfaceElevated, surfaceCard))
 
     val metallicBorderBrush: Brush
-        get() = if (isDark) {
-            Brush.linearGradient(colors = listOf(BorderSpecularTop, borderMetal, borderSubtle))
-        } else {
-            Brush.linearGradient(colors = listOf(LightBorderSpecularTop, borderMetal.copy(alpha = 0.55f), borderSubtle))
-        }
+        get() = Brush.verticalGradient(colors = listOf(borderMetal, borderSubtle))
 
     val actionGradientBrush: Brush
-        get() = Brush.horizontalGradient(colors = listOf(primaryDeep, primaryNeon))
+        get() = Brush.horizontalGradient(
+            colors = listOf(primaryDeep, lerp(primaryDeep, primaryNeon, 0.36f))
+        )
 }
 
 object DepartmentColorResolver {

@@ -40,7 +40,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
@@ -182,7 +181,7 @@ fun WeeklyFlowStripSection(
                 ) {
                     Text(
                         text = visibleRangeText,
-                        fontSize = 10.sp,
+                        fontSize = 11.sp,
                         fontFamily = FontFamily.Monospace,
                         color = dyn.textSecondary
                     )
@@ -211,10 +210,10 @@ fun WeeklyFlowStripSection(
                     ) {
                         Text(
                             text = trEn("Bugün", "Today"),
-                            fontSize = 10.sp,
+                            fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             color = dyn.primaryNeon,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
+                            modifier = Modifier.padding(horizontal = 9.dp, vertical = 3.dp)
                         )
                     }
                 }
@@ -274,34 +273,22 @@ fun WeeklyFlowStripSection(
                         else -> dyn.textMuted
                     }
 
+                    val cardBgColor = when {
+                        isToday -> if (dyn.isDark) dyn.activeChipBg else dyn.primaryNeon.copy(alpha = 0.08f)
+                        isCentered -> dyn.surfaceElevated
+                        else -> dyn.surfaceCard
+                    }
+                    val cardBorderColor = when {
+                        isToday -> dyn.primaryNeon
+                        isCentered -> dyn.accentCyan.copy(alpha = 0.65f)
+                        isEveningShift -> ShiftOvertimeAmber.copy(alpha = 0.45f)
+                        isNightShift -> ShiftGece.copy(alpha = 0.38f)
+                        isDayShift -> ShiftGunduz.copy(alpha = 0.38f)
+                        else -> dyn.borderSubtle
+                    }
                     val cardModifier = Modifier
                         .width(itemWidth)
                         .heightIn(min = if (isToday) 104.dp else 94.dp)
-                        .then(
-                            if (isToday) {
-                                Modifier.shadow(
-                                    elevation = 10.dp,
-                                    shape = RoundedCornerShape(16.dp),
-                                    ambientColor = dyn.primaryNeon,
-                                    spotColor = dyn.primaryNeon
-                                )
-                            } else {
-                                Modifier
-                            }
-                        )
-                        .titaniumBrushedSurface(
-                            shape = RoundedCornerShape(16.dp),
-                            borderColor = when {
-                                isToday -> dyn.primaryNeon
-                                isCentered -> dyn.accentCyan.copy(alpha = 0.65f)
-                                isEveningShift -> ShiftOvertimeAmber.copy(alpha = 0.50f)
-                                isNightShift -> ShiftGece.copy(alpha = 0.42f)
-                                isDayShift -> ShiftGunduz.copy(alpha = 0.42f)
-                                else -> dyn.borderSubtle
-                            },
-                            borderWidth = if (isToday) 1.8.dp else if (isCentered) 1.3.dp else 1.dp,
-                            elevated = isToday || isCentered
-                        )
                         .clip(RoundedCornerShape(16.dp))
                         .clickable { onInspectDay(day) }
                         .testTag(if (isToday) "weekly_flow_today_card" else "weekly_flow_day_${day.date}")
@@ -309,7 +296,11 @@ fun WeeklyFlowStripSection(
                     Surface(
                         modifier = cardModifier,
                         shape = RoundedCornerShape(16.dp),
-                        color = Color.Transparent
+                        color = cardBgColor,
+                        border = BorderStroke(
+                            width = if (isToday) 1.5.dp else if (isCentered) 1.2.dp else 1.dp,
+                            color = cardBorderColor
+                        )
                     ) {
                         Column(
                             modifier = Modifier.padding(vertical = if (isToday) 10.dp else 8.dp, horizontal = 4.dp),
@@ -365,7 +356,7 @@ fun WeeklyFlowStripSection(
                             ) {
                                 Text(
                                     text = badge,
-                                    fontSize = 9.sp,
+                                    fontSize = 10.sp,
                                     fontFamily = ProshiftMonoFont,
                                     fontWeight = FontWeight.Bold,
                                     color = when {

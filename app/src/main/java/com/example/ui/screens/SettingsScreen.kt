@@ -257,24 +257,19 @@ fun SettingsScreen(
 
             Box(
                 modifier = Modifier
-                    .size(44.dp)
+                    .size(48.dp)
+                    .clip(CircleShape)
                     .clickable { viewModel.navigateTo(AppScreen.PROFILE) },
                 contentAlignment = Alignment.Center
             ) {
                 UserAvatarImage(
                     avatarPath = settings.avatarUriOrPath,
                     contentDescription = trEn("Profil", "Profile"),
+                    displayName = settings.employeeName,
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
                         .border(1.5.dp, dyn.borderMetal, CircleShape)
-                )
-                Box(
-                    modifier = Modifier
-                        .size(10.dp)
-                        .align(Alignment.BottomEnd)
-                        .background(dyn.accentCyan, CircleShape)
-                        .border(1.5.dp, dyn.background, CircleShape)
                 )
             }
         }

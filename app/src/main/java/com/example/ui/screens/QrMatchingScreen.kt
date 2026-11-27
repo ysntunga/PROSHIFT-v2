@@ -44,10 +44,12 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LocalCafe
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material.icons.rounded.EventAvailable
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -85,7 +87,6 @@ import com.example.data.model.MatchType
 import com.example.data.model.ShiftMatchDay
 import com.example.ui.components.ManualColleagueSheet
 import com.example.ui.components.UserAvatarImage
-import com.example.ui.theme.BorderSpecularTop
 import com.example.ui.theme.DynamicTheme
 import com.example.ui.i18n.LocalAppLocale
 import com.example.ui.i18n.LocalIsEnglish
@@ -242,6 +243,7 @@ fun QrMatchingScreen(
                     UserAvatarImage(
                         avatarPath = settings.avatarUriOrPath,
                         contentDescription = trEn(isEn, "Profil", "Profile"),
+                        displayName = settings.employeeName,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -264,7 +266,7 @@ fun QrMatchingScreen(
                     ) {
                         Box(modifier = Modifier.size(6.dp).background(dyn.accentCyan, CircleShape))
                         Text(
-                            text = trEn(isEn, "P2P TELEMETRİ SENKRON", "P2P TELEMETRY SYNC"),
+                            text = trEn(isEn, "ÇEVRİMDIŞI QR EŞLEŞME", "OFFLINE QR MATCH"),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = dyn.accentCyan,
@@ -273,7 +275,7 @@ fun QrMatchingScreen(
                     }
 
                     Text(
-                        text = "v${com.example.BuildConfig.VERSION_NAME} TITANIUM",
+                        text = "v${com.example.BuildConfig.VERSION_NAME}",
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
                         color = dyn.textMuted,
@@ -335,18 +337,12 @@ fun QrMatchingScreen(
                                     UserAvatarImage(
                                         avatarPath = settings.avatarUriOrPath,
                                         contentDescription = settings.employeeName,
+                                        displayName = settings.employeeName,
                                         modifier = Modifier.fillMaxSize()
-                                    )
-                                    Box(
-                                        modifier = Modifier
-                                            .size(14.dp)
-                                            .background(dyn.accentCyan, CircleShape)
-                                            .border(1.5.dp, dyn.surfaceCard, CircleShape)
-                                            .align(Alignment.BottomEnd)
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(6.dp))
-                                Text(text = trEn(isEn, "SEN", "YOU"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.accentCyan)
+                                Text(text = trEn(isEn, "SEN", "YOU"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.accentCyan)
                                 Text(
                                     text = settings.employeeName,
                                     fontSize = 12.sp,
@@ -382,7 +378,7 @@ fun QrMatchingScreen(
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = trEn(isEn, "KİŞİ SEÇ", "SELECT"),
-                                    fontSize = 8.sp,
+                                    fontSize = 10.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = dyn.accentCyan,
                                     letterSpacing = 0.5.sp
@@ -406,22 +402,16 @@ fun QrMatchingScreen(
                                             .clip(CircleShape)
                                             .border(2.dp, dyn.nightShiftAccent, CircleShape)
                                     ) {
-                                        Image(
-                                            painter = painterResource(id = R.drawable.doctor_kaan_avatar_1794486160219),
+                                        UserAvatarImage(
+                                            avatarPath = "",
                                             contentDescription = activeColleague.name,
-                                            modifier = Modifier.fillMaxSize(),
-                                            contentScale = ContentScale.Crop
-                                        )
-                                        Box(
-                                            modifier = Modifier
-                                                .size(14.dp)
-                                                .background(dyn.nightShiftAccent, CircleShape)
-                                                .border(1.5.dp, dyn.surfaceCard, CircleShape)
-                                                .align(Alignment.BottomEnd)
+                                            displayName = activeColleague.name,
+                                            accentColor = dyn.nightShiftAccent,
+                                            modifier = Modifier.fillMaxSize()
                                         )
                                     }
                                     Spacer(modifier = Modifier.height(6.dp))
-                                    Text(text = trEn(isEn, "EŞLEŞEN ▼", "MATCHED ▼"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.nightShiftAccent)
+                                    Text(text = trEn(isEn, "EŞLEŞEN", "MATCHED"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.nightShiftAccent)
                                     Text(
                                         text = activeColleague.name,
                                         fontSize = 12.sp,
@@ -452,7 +442,7 @@ fun QrMatchingScreen(
                                         )
                                     }
                                     Spacer(modifier = Modifier.height(6.dp))
-                                    Text(text = trEn(isEn, "ARKADAŞ EKLE", "ADD FRIEND"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.accentCyan)
+                                    Text(text = trEn(isEn, "ARKADAŞ EKLE", "ADD FRIEND"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.accentCyan)
                                     Text(
                                         text = trEn(isEn, "Henüz kişi yok", "No one yet"),
                                         fontSize = 12.sp,
@@ -474,21 +464,16 @@ fun QrMatchingScreen(
 
                         // Button 1: QR Kod ile Arkadaş Cihazından İçe Aktar
                         Surface(
+                            onClick = { viewModel.navigateTo(AppScreen.QR_SCANNER) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(48.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                                .clickable { viewModel.navigateTo(AppScreen.QR_SCANNER) }
-                                .shadow(if (dyn.isDark) 8.dp else 4.dp, RoundedCornerShape(12.dp), ambientColor = dyn.primaryNeon)
-                                .border(1.dp, if (dyn.isDark) BorderSpecularTop else dyn.primaryNeon.copy(alpha = 0.25f), RoundedCornerShape(12.dp))
                                 .testTag("btn_open_qr_scanner"),
                             shape = RoundedCornerShape(12.dp),
-                            color = Color.Transparent
+                            color = dyn.primaryDeep
                         ) {
                             Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(Brush.horizontalGradient(listOf(dyn.primaryNeon, dyn.primaryDeep))),
+                                modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Row(
@@ -642,19 +627,24 @@ fun QrMatchingScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(text = "🎉", fontSize = 12.sp)
+                                    Icon(
+                                        imageVector = Icons.Rounded.EventAvailable,
+                                        contentDescription = trEn(isEn, "Ortak İzin", "Common Off"),
+                                        tint = dyn.dayShiftAccent,
+                                        modifier = Modifier.size(16.dp)
+                                    )
                                     Box(
                                         modifier = Modifier
                                             .background(dyn.dayShiftBg, RoundedCornerShape(4.dp))
                                             .padding(horizontal = 6.dp, vertical = 2.dp)
                                     ) {
-                                        Text(text = trEn(isEn, "Ortak", "Shared"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.dayShiftAccent)
+                                        Text(text = trEn(isEn, "Ortak", "Shared"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.dayShiftAccent)
                                     }
                                 }
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(text = "${commonOffList.size}", fontSize = 24.sp, fontWeight = FontWeight.Black, color = dyn.textPrimary)
                                 Text(text = trEn(isEn, "Ortak İzin", "Common Off"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = dyn.textPrimary)
-                                Text(text = localizedMonthTitle, fontSize = 9.sp, color = dyn.accentCyan, maxLines = 1)
+                                Text(text = localizedMonthTitle, fontSize = 10.sp, color = dyn.accentCyan, maxLines = 1)
                             }
                         }
 
@@ -671,19 +661,24 @@ fun QrMatchingScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(text = "👥", fontSize = 12.sp)
+                                    Icon(
+                                        imageVector = Icons.Filled.People,
+                                        contentDescription = trEn(isEn, "Birlikte Nöbet", "Same Shift"),
+                                        tint = dyn.nightShiftAccent,
+                                        modifier = Modifier.size(16.dp)
+                                    )
                                     Box(
                                         modifier = Modifier
                                             .background(dyn.nightShiftBg, RoundedCornerShape(4.dp))
                                             .padding(horizontal = 6.dp, vertical = 2.dp)
                                     ) {
-                                        Text(text = trEn(isEn, "Nöbet", "Shift"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.nightShiftAccent)
+                                        Text(text = trEn(isEn, "Nöbet", "Shift"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.nightShiftAccent)
                                     }
                                 }
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(text = "${commonDutyList.size}", fontSize = 24.sp, fontWeight = FontWeight.Black, color = dyn.textPrimary)
                                 Text(text = trEn(isEn, "Birlikte Nöbet", "Same Shift"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = dyn.textPrimary)
-                                Text(text = trEn(isEn, "Aynı Vardiya", "On Duty Together"), fontSize = 9.sp, color = dyn.textSecondary)
+                                Text(text = trEn(isEn, "Aynı Vardiya", "On Duty Together"), fontSize = 10.sp, color = dyn.textSecondary)
                             }
                         }
 
@@ -700,19 +695,24 @@ fun QrMatchingScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(text = "⇄", fontSize = 12.sp, color = dyn.eveningShiftAccent)
+                                    Icon(
+                                        imageVector = Icons.Filled.SwapHoriz,
+                                        contentDescription = trEn(isEn, "Zıt / Takas", "Opposite / Swap"),
+                                        tint = dyn.eveningShiftAccent,
+                                        modifier = Modifier.size(16.dp)
+                                    )
                                     Box(
                                         modifier = Modifier
                                             .background(dyn.eveningShiftBg, RoundedCornerShape(4.dp))
                                             .padding(horizontal = 6.dp, vertical = 2.dp)
                                     ) {
-                                        Text(text = trEn(isEn, "Farklı", "Swap"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.eveningShiftAccent)
+                                        Text(text = trEn(isEn, "Farklı", "Swap"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.eveningShiftAccent)
                                     }
                                 }
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(text = "${swapOppList.size}", fontSize = 24.sp, fontWeight = FontWeight.Black, color = dyn.textPrimary)
                                 Text(text = trEn(isEn, "Zıt / Takas", "Opposite / Swap"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = dyn.textPrimary)
-                                Text(text = trEn(isEn, "Fırsat Günü", "Swap Option"), fontSize = 9.sp, color = dyn.textSecondary)
+                                Text(text = trEn(isEn, "Fırsat Günü", "Swap Option"), fontSize = 10.sp, color = dyn.textSecondary)
                             }
                         }
                     }
@@ -734,7 +734,7 @@ fun QrMatchingScreen(
                                 letterSpacing = 0.5.sp
                             )
                             Text(
-                                text = trEn(isEn, "$localizedMonthTitle — Ortak Gün Matrisi", "$localizedMonthTitle — Match Matrix"),
+                                text = trEn(isEn, "$localizedMonthTitle — Ortak Gün Özeti", "$localizedMonthTitle — Shared Schedule"),
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = dyn.textPrimary
@@ -776,7 +776,7 @@ fun QrMatchingScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                Text(text = trEn(isEn, "🎉 Ortak (${commonOffList.size})", "🎉 Off (${commonOffList.size})"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = if (selectedMatrixFilter == 0) dyn.dayShiftAccent else dyn.textSecondary)
+                                Text(text = trEn(isEn, "Ortak (${commonOffList.size})", "Off (${commonOffList.size})"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = if (selectedMatrixFilter == 0) dyn.dayShiftAccent else dyn.textSecondary)
                             }
                         }
 
@@ -795,7 +795,7 @@ fun QrMatchingScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                Text(text = trEn(isEn, "👥 Nöbet (${commonDutyList.size})", "👥 Shift (${commonDutyList.size})"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = if (selectedMatrixFilter == 1) dyn.nightShiftAccent else dyn.textSecondary)
+                                Text(text = trEn(isEn, "Nöbet (${commonDutyList.size})", "Shift (${commonDutyList.size})"), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = if (selectedMatrixFilter == 1) dyn.nightShiftAccent else dyn.textSecondary)
                             }
                         }
 
@@ -827,19 +827,19 @@ fun QrMatchingScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = trEn(isEn, "${localizedMonthTitle.uppercase(appLocale)} ŞERİDİ", "${localizedMonthTitle.uppercase(appLocale)} STRIP"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
+                        Text(text = trEn(isEn, "${localizedMonthTitle.uppercase(appLocale)} ŞERİDİ", "${localizedMonthTitle.uppercase(appLocale)} STRIP"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                                 Box(modifier = Modifier.size(5.dp).background(dyn.dayShiftAccent, CircleShape))
-                                Text(text = trEn(isEn, "Ortak İzin", "Common Off"), fontSize = 9.sp, color = dyn.textSecondary)
+                                Text(text = trEn(isEn, "Ortak İzin", "Common Off"), fontSize = 10.sp, color = dyn.textSecondary)
                             }
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                                 Box(modifier = Modifier.size(5.dp).background(dyn.nightShiftAccent, CircleShape))
-                                Text(text = trEn(isEn, "Nöbet", "Shift"), fontSize = 9.sp, color = dyn.textSecondary)
+                                Text(text = trEn(isEn, "Nöbet", "Shift"), fontSize = 10.sp, color = dyn.textSecondary)
                             }
                             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                                 Box(modifier = Modifier.size(5.dp).background(dyn.eveningShiftAccent, CircleShape))
-                                Text(text = trEn(isEn, "Zıt", "Swap"), fontSize = 9.sp, color = dyn.textSecondary)
+                                Text(text = trEn(isEn, "Zıt", "Swap"), fontSize = 10.sp, color = dyn.textSecondary)
                             }
                         }
                     }
@@ -901,11 +901,11 @@ fun QrMatchingScreen(
                                     )
                                     Text(
                                         text = match.date.format(dayAbbrFmt).take(3),
-                                        fontSize = 9.sp,
+                                        fontSize = 10.sp,
                                         color = dyn.textSecondary
                                     )
                                     Spacer(modifier = Modifier.height(2.dp))
-                                    Text(text = lbl, fontSize = 8.sp, fontWeight = FontWeight.Bold, color = badgeColor)
+                                    Text(text = lbl, fontSize = 9.sp, fontWeight = FontWeight.Bold, color = badgeColor)
                                 }
                             }
                         }
@@ -1319,27 +1319,27 @@ private fun MatchDayDetailCard(
     val (badgeText, badgeColor, badgeBg, borderCol) = when (match.matchType) {
         MatchType.COMMON_OFF -> if (isWeekend) {
             MatchBadgeStyle(
-                trEn(isEn, "🛋️ HAFTA SONU ORTAK İZİN", "🛋️ WEEKEND COMMON OFF"),
+                trEn(isEn, "HAFTA SONU ORTAK İZİN", "WEEKEND COMMON OFF"),
                 dyn.nightShiftAccent,
                 dyn.nightShiftBg,
                 dyn.nightShiftBorder
             )
         } else {
             MatchBadgeStyle(
-                trEn(isEn, "🎉 TAM GÜN ORTAK İZİN", "🎉 FULL DAY COMMON OFF"),
+                trEn(isEn, "TAM GÜN ORTAK İZİN", "FULL DAY COMMON OFF"),
                 dyn.dayShiftAccent,
                 dyn.dayShiftBg,
                 dyn.dayShiftBorder
             )
         }
         MatchType.COMMON_DUTY -> MatchBadgeStyle(
-            trEn(isEn, "🏷️ AYNI VARDİYA — BİRLİKTE NÖBET", "🏷️ SAME SHIFT — ON DUTY TOGETHER"),
+            trEn(isEn, "AYNI VARDİYA • BİRLİKTE NÖBET", "SAME SHIFT • ON DUTY TOGETHER"),
             dyn.nightShiftAccent,
             dyn.nightShiftBg,
             dyn.borderSubtle
         )
         MatchType.SWAP_OPPORTUNITY -> MatchBadgeStyle(
-            trEn(isEn, "⚡ ZIT VARDİYA / TAKAS FIRSATI", "⚡ OPPOSITE SHIFT / SWAP OPTION"),
+            trEn(isEn, "ZIT VARDİYA • TAKAS FIRSATI", "OPPOSITE SHIFT • SWAP OPTION"),
             dyn.eveningShiftAccent,
             dyn.eveningShiftBg,
             dyn.borderSubtle

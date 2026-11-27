@@ -137,7 +137,6 @@ import com.example.ui.i18n.LocalIsEnglish
 import com.example.ui.i18n.formatMonthTitleLocalized
 import com.example.ui.i18n.localizedName
 import com.example.ui.i18n.trEn
-import com.example.ui.theme.BorderSpecularTop
 import com.example.ui.theme.DynamicTheme
 import com.example.ui.viewmodel.AppScreen
 import com.example.ui.viewmodel.ShiftViewModel
@@ -552,6 +551,7 @@ fun QrScannerScreen(
                         UserAvatarImage(
                             avatarPath = settings.avatarUriOrPath,
                             contentDescription = trEn("Profil", "Profile"),
+                            displayName = settings.employeeName,
                             modifier = Modifier.fillMaxSize()
                         )
                     }
@@ -571,7 +571,7 @@ fun QrScannerScreen(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 val activeTabBg = if (dyn.isDark) dyn.surfaceElevated else dyn.surfaceCard
-                val activeTabBorder = if (dyn.isDark) BorderSpecularTop else dyn.borderSubtle
+                val activeTabBorder = dyn.borderSubtle
                 Box(
                     modifier = Modifier
                         .weight(1f)
@@ -881,22 +881,18 @@ fun QrScannerScreen(
                             }
 
                             Surface(
+                                onClick = {
+                                    handleDecodedQrRaw(syncLinkInput, fromCamera = false)
+                                },
                                 modifier = Modifier
                                     .weight(1.4f)
                                     .height(48.dp)
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .clickable {
-                                        handleDecodedQrRaw(syncLinkInput, fromCamera = false)
-                                    }
-                                    .border(1.dp, if (dyn.isDark) BorderSpecularTop else Color.Transparent, RoundedCornerShape(12.dp))
                                     .testTag("btn_verify_sync_link"),
                                 shape = RoundedCornerShape(12.dp),
-                                color = Color.Transparent
+                                color = dyn.primaryDeep
                             ) {
                                 Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .background(Brush.horizontalGradient(listOf(dyn.primaryNeon, dyn.primaryDeep))),
+                                    modifier = Modifier.fillMaxSize(),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(text = trEn("Çözümle ve İşle", "Decode & Apply"), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color.White)
@@ -1399,6 +1395,7 @@ fun QrCodeShareTab(
                 UserAvatarImage(
                     avatarPath = settings.avatarUriOrPath,
                     contentDescription = settings.employeeName,
+                    displayName = settings.employeeName,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -1656,8 +1653,7 @@ fun QrCodeShareTab(
                                 Toast.makeText(context, trEn(isEn, "Paylaşım ekranı açılamadı", "Could not open share sheet"), Toast.LENGTH_SHORT).show()
                             }
                         }
-                    }
-                    .border(1.dp, if (dyn.isDark) BorderSpecularTop else Color.Transparent, RoundedCornerShape(12.dp)),
+                    },
                 shape = RoundedCornerShape(12.dp),
                 color = Color(0xFF15803D)
             ) {
@@ -1754,7 +1750,7 @@ fun ResolvedShiftBottomSheet(
                     .clickable(enabled = false) {}
                     .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
                     .background(dyn.surfaceCard)
-                    .border(1.dp, if (dyn.isDark) BorderSpecularTop else dyn.borderSubtle, RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+                    .border(1.dp, dyn.borderSubtle, RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
                     .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
                     .imePadding()
                     .verticalScroll(rememberScrollState())
@@ -1869,11 +1865,12 @@ fun ResolvedShiftBottomSheet(
                             .clip(CircleShape)
                             .border(1.5.dp, dyn.nightShiftAccent, CircleShape)
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.doctor_kaan_avatar_1794486160219),
+                        UserAvatarImage(
+                            avatarPath = "",
                             contentDescription = colleague.name,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop
+                            displayName = colleague.name,
+                            accentColor = dyn.nightShiftAccent,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
 

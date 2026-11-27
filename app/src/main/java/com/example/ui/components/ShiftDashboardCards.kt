@@ -1,6 +1,5 @@
 package com.example.ui.components
 
-import android.os.Build
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -11,7 +10,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,32 +29,23 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.PauseCircle
 import androidx.compose.material.icons.filled.PlayCircle
-import androidx.compose.material.icons.rounded.EventAvailable
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material.icons.rounded.Speed
-import androidx.compose.material.icons.rounded.Timer
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -82,24 +71,14 @@ import com.example.ui.i18n.localizedNextShiftTitle
 import com.example.ui.i18n.localizedShiftHoursRange
 import com.example.ui.i18n.localizedTitle
 import com.example.ui.i18n.trEn
-import com.example.ui.theme.AccentCyan
-import com.example.ui.theme.BorderSpecularTop
-import com.example.ui.theme.BorderSubtle
 import com.example.ui.theme.DynamicTheme
 import com.example.ui.theme.EmeraldGlow
 import com.example.ui.theme.ProshiftMonoFont
 import com.example.ui.theme.ShiftGece
-import com.example.ui.theme.ShiftGunduz
 import com.example.ui.theme.ShiftOvertimeAmber
-import com.example.ui.theme.SurfaceCard
-import com.example.ui.theme.SurfaceElevated
-import com.example.ui.theme.TextMuted
-import com.example.ui.theme.TextPrimary
-import com.example.ui.theme.TextSecondary
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.math.PI
 import kotlin.math.cos
@@ -240,21 +219,22 @@ fun CurrentShiftStatusCard(
     val statusChipColor = if (telemetry.isOnDuty) EmeraldGlow else dyn.primaryNeon
     val activeShiftType = telemetry.currentShiftType ?: ShiftType.GUNDUZ
 
-    ElevatedCard(
+    Card(
         modifier = modifier
             .fillMaxWidth()
             .testTag("dashboard_current_shift_card"),
         shape = RoundedCornerShape(22.dp),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+        colors = CardDefaults.cardColors(
+            containerColor = dyn.surfaceCard
         ),
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp)
+        border = BorderStroke(1.dp, dyn.borderSubtle),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = if (dyn.isDark) 0.dp else 2.dp
+        )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(dyn.brushedSurfaceBrush)
-                .border(1.dp, dyn.borderSubtle, RoundedCornerShape(22.dp))
                 .padding(horizontal = 18.dp, vertical = 16.dp)
         ) {
             // Top Status Row: Active state badge + shift type pill
@@ -333,37 +313,15 @@ fun CurrentShiftStatusCard(
                     .height(178.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(182.dp)
-                        .then(
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                                Modifier.blur(24.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
-                            } else {
-                                Modifier
-                            }
-                        )
-                        .background(
-                            brush = Brush.radialGradient(
-                                colors = listOf(
-                                    dyn.primaryNeon.copy(alpha = 0.17f * (0.75f + 0.25f * pulseAlpha)),
-                                    dyn.primaryDeep.copy(alpha = 0.10f),
-                                    Color.Transparent
-                                )
-                            ),
-                            shape = CircleShape
-                        )
-                )
-
-                Canvas(modifier = Modifier.size(176.dp)) {
-                    val strokeWidth = 11.dp.toPx()
+                Canvas(modifier = Modifier.size(174.dp)) {
+                    val strokeWidth = 10.dp.toPx()
                     val pad = strokeWidth / 2f
                     val arcSize = Size(size.width - strokeWidth, size.height - strokeWidth)
                     val topLeft = Offset(pad, pad)
                     val sweepAngle = 360f * animatedProgress
 
                     drawArc(
-                        color = dyn.surfaceElevated.copy(alpha = 0.9f),
+                        color = dyn.surfaceElevated,
                         startAngle = -90f,
                         sweepAngle = 360f,
                         useCenter = false,
@@ -373,18 +331,8 @@ fun CurrentShiftStatusCard(
                     )
 
                     if (sweepAngle > 0.5f) {
-                        drawArc(
-                            color = dyn.primaryNeon.copy(alpha = 0.20f * (0.7f + 0.3f * pulseAlpha)),
-                            startAngle = -90f,
-                            sweepAngle = sweepAngle,
-                            useCenter = false,
-                            topLeft = topLeft,
-                            size = arcSize,
-                            style = Stroke(width = strokeWidth * 1.9f, cap = StrokeCap.Round)
-                        )
-
                         val gradientBrush = Brush.linearGradient(
-                            colors = listOf(dyn.primaryDeep, dyn.primaryNeon, dyn.accentCyan),
+                            colors = listOf(dyn.primaryDeep, dyn.primaryNeon),
                             start = Offset(size.width * 0.5f, 0f),
                             end = Offset(size.width * 0.5f, size.height)
                         )
@@ -395,7 +343,7 @@ fun CurrentShiftStatusCard(
                             useCenter = false,
                             topLeft = topLeft,
                             size = arcSize,
-                            style = Stroke(width = strokeWidth + 1.5f, cap = StrokeCap.Round)
+                            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
                         )
 
                         val endRad = (-90f + sweepAngle) * (PI / 180.0)
@@ -403,13 +351,13 @@ fun CurrentShiftStatusCard(
                         val tipX = center.x + (radius * cos(endRad)).toFloat()
                         val tipY = center.y + (radius * sin(endRad)).toFloat()
                         drawCircle(
-                            color = dyn.accentCyan.copy(alpha = 0.36f * pulseAlpha),
-                            radius = strokeWidth * 0.9f,
+                            color = dyn.surfaceCard,
+                            radius = strokeWidth * 0.52f,
                             center = Offset(tipX, tipY)
                         )
                         drawCircle(
-                            color = dyn.textPrimary,
-                            radius = strokeWidth * 0.34f,
+                            color = dyn.accentCyan,
+                            radius = strokeWidth * 0.30f,
                             center = Offset(tipX, tipY)
                         )
                     }
@@ -497,30 +445,18 @@ fun CurrentShiftStatusCard(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Surface(
+                    onClick = onBreakOvertimeClick,
                     modifier = Modifier
                         .weight(1f)
                         .heightIn(min = 48.dp)
-                        .clip(RoundedCornerShape(14.dp))
-                        .clickable(onClick = onBreakOvertimeClick)
-                        .shadow(10.dp, RoundedCornerShape(14.dp), ambientColor = dyn.primaryNeon)
                         .testTag("dashboard_break_overtime_button"),
                     shape = RoundedCornerShape(14.dp),
-                    color = Color.Transparent
+                    color = if (telemetry.isBreakActive) Color(0xFFD97706) else dyn.primaryDeep
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(48.dp)
-                            .background(
-                                if (telemetry.isBreakActive) {
-                                    Brush.horizontalGradient(
-                                        colors = listOf(ShiftOvertimeAmber, Color(0xFFB45309))
-                                    )
-                                } else {
-                                    dyn.actionGradientBrush
-                                }
-                            )
-                            .border(1.dp, BorderSpecularTop, RoundedCornerShape(14.dp)),
+                            .height(48.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Row(
@@ -650,7 +586,7 @@ fun ShiftMetricsDuoRow(
                             )
                             Text(
                                 text = telemetry.nextShiftType.localizedTitle(isEn).uppercase(appLocale),
-                                fontSize = 9.sp,
+                                fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = nextTypeColor,
                                 maxLines = 1
@@ -821,276 +757,6 @@ fun ShiftMetricsDuoRow(
                         color = dyn.textMuted,
                         modifier = Modifier.clickable(onClick = onTimesheetClick)
                     )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun UpcomingShiftTimersCard(
-    upcomingTimers: List<UpcomingShiftTimer>,
-    now: LocalDateTime,
-    onInspectDay: (ShiftDay) -> Unit,
-    onViewAllClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val isEn = LocalIsEnglish.current
-    val appLocale = LocalAppLocale.current
-    val hUnit = formatHourUnit(isEn)
-    val dyn = DynamicTheme.colors
-    val dateFmt = remember(appLocale) { DateTimeFormatter.ofPattern("EEE, d MMM", appLocale) }
-
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .testTag("dashboard_upcoming_timers_card"),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = dyn.surfaceCard),
-        border = BorderStroke(1.dp, dyn.borderSubtle)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(dyn.brushedSurfaceBrush)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(30.dp)
-                            .clip(RoundedCornerShape(9.dp))
-                            .background(dyn.primaryNeon.copy(alpha = 0.14f))
-                            .border(1.dp, dyn.primaryNeon.copy(alpha = 0.35f), RoundedCornerShape(9.dp)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Timer,
-                            contentDescription = trEn("Yaklaşan Vardiya Sayaçları", "Upcoming Shift Timers"),
-                            tint = dyn.accentCyan,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                    Column {
-                        Text(
-                            text = trEn("Yaklaşan Vardiya Sayaçları", "Upcoming Shift Timers"),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Black,
-                            color = dyn.textPrimary
-                        )
-                        Text(
-                            text = trEn("Sıradaki nöbetlere canlı geri sayım", "Live countdown to upcoming shifts"),
-                            fontSize = 10.sp,
-                            color = dyn.textSecondary
-                        )
-                    }
-                }
-
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .clickable(onClick = onViewAllClick)
-                        .padding(horizontal = 6.dp, vertical = 6.dp)
-                        .testTag("dashboard_upcoming_view_all"),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(3.dp)
-                ) {
-                    Text(
-                        text = trEn("Takvim", "Schedule"),
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = dyn.accentCyan
-                    )
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
-                        contentDescription = null,
-                        tint = dyn.accentCyan,
-                        modifier = Modifier.size(13.dp)
-                    )
-                }
-            }
-
-            if (upcomingTimers.isEmpty()) {
-                OutlinedCard(
-                    onClick = onViewAllClick,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("dashboard_upcoming_empty_state"),
-                    shape = RoundedCornerShape(14.dp),
-                    colors = CardDefaults.outlinedCardColors(
-                        containerColor = dyn.surfaceElevated.copy(alpha = 0.65f)
-                    ),
-                    border = BorderStroke(1.dp, dyn.borderSubtle)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 14.dp, vertical = 14.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.EventAvailable,
-                            contentDescription = trEn("Planlanmış Vardiya Yok", "No Upcoming Shifts"),
-                            tint = EmeraldGlow,
-                            modifier = Modifier.size(22.dp)
-                        )
-                        Column {
-                            Text(
-                                text = trEn("Yakın 7 günde planlı nöbet yok", "No shifts scheduled in the next 7 days"),
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = dyn.textPrimary
-                            )
-                            Text(
-                                text = trEn("Takvimden yeni vardiya veya döngü ayarlayın.", "Open Calendar to customize your shift cycle."),
-                                fontSize = 11.sp,
-                                color = dyn.textSecondary
-                            )
-                        }
-                    }
-                }
-            } else {
-                upcomingTimers.forEachIndexed { index, item ->
-                    val shift = item.shiftDay
-                    val accent = when {
-                        shift.type == ShiftType.AKSAM -> ShiftOvertimeAmber
-                        shift.type.isNight -> ShiftGece
-                        else -> ShiftGunduz
-                    }
-                    val relativeDayLabel = when (shift.date) {
-                        now.toLocalDate() -> trEn("Bugün", "Today")
-                        now.toLocalDate().plusDays(1) -> trEn("Yarın", "Tomorrow")
-                        else -> shift.date.format(dateFmt)
-                    }
-                    val countdownText = formatUpcomingCountdown(item.secondsUntilStart, isEn)
-
-                    OutlinedCard(
-                        onClick = { onInspectDay(shift) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = 56.dp)
-                            .testTag("upcoming_shift_timer_item_$index"),
-                        shape = RoundedCornerShape(14.dp),
-                        colors = CardDefaults.outlinedCardColors(
-                            containerColor = dyn.surfaceElevated.copy(alpha = if (index == 0) 0.90f else 0.65f)
-                        ),
-                        border = BorderStroke(
-                            width = if (index == 0) 1.2.dp else 1.dp,
-                            color = if (index == 0) accent.copy(alpha = 0.55f) else dyn.borderSubtle
-                        )
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 12.dp, vertical = 10.dp),
-                            verticalArrangement = Arrangement.spacedBy(7.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Row(
-                                    modifier = Modifier.weight(1f),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(34.dp)
-                                            .clip(RoundedCornerShape(10.dp))
-                                            .background(accent.copy(alpha = 0.16f))
-                                            .border(1.dp, accent.copy(alpha = 0.38f), RoundedCornerShape(10.dp)),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            imageVector = shiftTypeVector(shift.type),
-                                            contentDescription = shift.type.localizedTitle(isEn),
-                                            tint = accent,
-                                            modifier = Modifier.size(17.dp)
-                                        )
-                                    }
-
-                                    Column {
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(6.dp)
-                                        ) {
-                                            Text(
-                                                text = shift.type.localizedTitle(isEn),
-                                                fontSize = 13.sp,
-                                                fontWeight = FontWeight.Bold,
-                                                color = dyn.textPrimary,
-                                                maxLines = 1
-                                            )
-                                            Text(
-                                                text = "• $relativeDayLabel",
-                                                fontSize = 11.sp,
-                                                fontWeight = FontWeight.SemiBold,
-                                                color = accent,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis
-                                            )
-                                        }
-                                        Text(
-                                            text = "${shift.startTime} - ${shift.endTime} (${shift.totalHours.toInt()}$hUnit)",
-                                            fontSize = 11.sp,
-                                            fontFamily = ProshiftMonoFont,
-                                            color = dyn.textSecondary,
-                                            maxLines = 1
-                                        )
-                                    }
-                                }
-
-                                Surface(
-                                    shape = RoundedCornerShape(9.dp),
-                                    color = accent.copy(alpha = 0.15f),
-                                    border = BorderStroke(1.dp, accent.copy(alpha = 0.4f))
-                                ) {
-                                    Row(
-                                        modifier = Modifier.padding(horizontal = 9.dp, vertical = 5.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.Schedule,
-                                            contentDescription = trEn("Kalan Süre", "Time Left"),
-                                            tint = accent,
-                                            modifier = Modifier.size(12.dp)
-                                        )
-                                        Text(
-                                            text = countdownText,
-                                            fontSize = 11.sp,
-                                            fontFamily = ProshiftMonoFont,
-                                            fontWeight = FontWeight.Black,
-                                            color = dyn.textPrimary,
-                                            maxLines = 1
-                                        )
-                                    }
-                                }
-                            }
-
-                            LinearProgressIndicator(
-                                progress = { item.proximityProgress },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(4.dp)
-                                    .clip(RoundedCornerShape(2.dp)),
-                                color = accent,
-                                trackColor = dyn.background.copy(alpha = 0.7f)
-                            )
-                        }
-                    }
                 }
             }
         }

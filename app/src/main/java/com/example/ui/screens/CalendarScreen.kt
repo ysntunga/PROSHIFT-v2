@@ -321,17 +321,11 @@ fun CalendarScreen(
                     UserAvatarImage(
                         avatarPath = settings.avatarUriOrPath,
                         contentDescription = trEn("Profil", "Profile"),
+                        displayName = settings.employeeName,
                         modifier = Modifier
                             .size(40.dp)
                             .clip(CircleShape)
                             .border(1.5.dp, dyn.borderMetal, CircleShape)
-                    )
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .align(Alignment.BottomEnd)
-                            .background(dyn.accentCyan, CircleShape)
-                            .border(1.5.dp, dyn.background, CircleShape)
                     )
                 }
             }
@@ -733,14 +727,14 @@ fun CalendarScreen(
                             Column(modifier = Modifier.padding(horizontal = 6.dp, vertical = 8.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                                     Icon(shiftTypeVector(ShiftType.AKSAM), contentDescription = trEn("Akşam", "Evening"), tint = dyn.eveningShiftAccent, modifier = Modifier.size(11.dp))
-                                    Text(trEn("Akşam", "Evening"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.eveningShiftAccent, maxLines = 1)
+                                    Text(trEn("Akşam", "Evening"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.eveningShiftAccent, maxLines = 1)
                                 }
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text("${aksamDays.size}$dayShort", fontSize = 9.sp, color = dyn.eveningShiftAccent)
+                                    Text("${aksamDays.size}$dayShort", fontSize = 10.sp, color = dyn.eveningShiftAccent)
                                     Text("${aksamHours}$hourUnit", fontSize = 12.sp, fontFamily = ProshiftMonoFont, fontWeight = FontWeight.Black, color = dyn.eveningShiftText)
                                 }
                             }
@@ -756,14 +750,14 @@ fun CalendarScreen(
                             Column(modifier = Modifier.padding(horizontal = 6.dp, vertical = 8.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                                     Icon(shiftTypeVector(ShiftType.GECE), contentDescription = trEn("Gece", "Night"), tint = dyn.nightShiftAccent, modifier = Modifier.size(11.dp))
-                                    Text(trEn("Gece", "Night"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.nightShiftAccent, maxLines = 1)
+                                    Text(trEn("Gece", "Night"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.nightShiftAccent, maxLines = 1)
                                 }
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text("${geceDays.size}$dayShort", fontSize = 9.sp, color = dyn.nightShiftAccent)
+                                    Text("${geceDays.size}$dayShort", fontSize = 10.sp, color = dyn.nightShiftAccent)
                                     Text("${geceHours}$hourUnit", fontSize = 12.sp, fontFamily = ProshiftMonoFont, fontWeight = FontWeight.Black, color = dyn.nightShiftText)
                                 }
                             }
@@ -779,14 +773,14 @@ fun CalendarScreen(
                             Column(modifier = Modifier.padding(horizontal = 6.dp, vertical = 8.dp)) {
                                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                                     Icon(shiftTypeVector(ShiftType.IZIN), contentDescription = trEn("İzin", "Off"), tint = dyn.offShiftAccent, modifier = Modifier.size(11.dp))
-                                    Text(trEn("İzin", "Off"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.offShiftAccent, maxLines = 1)
+                                    Text(trEn("İzin", "Off"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.offShiftAccent, maxLines = 1)
                                 }
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text("${izinDays.size}$dayShort", fontSize = 9.sp, color = dyn.textMuted)
+                                    Text("${izinDays.size}$dayShort", fontSize = 10.sp, color = dyn.textMuted)
                                     Text(
                                         text = if (offOvertimeHours > 0) "+${offOvertimeHours}$hourUnit" else "—",
                                         fontSize = 12.sp,
@@ -820,7 +814,7 @@ fun CalendarScreen(
                                         Icon(shiftTypeVector(ShiftType.GUNDUZ), contentDescription = trEn("Gündüz", "Day"), tint = dyn.dayShiftAccent, modifier = Modifier.size(12.dp))
                                         Text(trEn("Gündüz", "Day"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.dayShiftAccent)
                                     }
-                                    Text("(${morningOrDayDays.size}$dayShort)", fontSize = 9.sp, color = dyn.dayShiftAccent)
+                                    Text("(${morningOrDayDays.size}$dayShort)", fontSize = 10.sp, color = dyn.dayShiftAccent)
                                 }
                                 Text("${morningOrDayHours}$hourUnit", fontSize = 14.sp, fontFamily = ProshiftMonoFont, fontWeight = FontWeight.Black, color = dyn.dayShiftText)
                             }
@@ -843,7 +837,7 @@ fun CalendarScreen(
                                         Icon(shiftTypeVector(ShiftType.GECE), contentDescription = trEn("Gece", "Night"), tint = dyn.nightShiftAccent, modifier = Modifier.size(12.dp))
                                         Text(trEn("Gece", "Night"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.nightShiftAccent)
                                     }
-                                    Text("(${geceDays.size}$dayShort)", fontSize = 9.sp, color = dyn.nightShiftAccent)
+                                    Text("(${geceDays.size}$dayShort)", fontSize = 10.sp, color = dyn.nightShiftAccent)
                                 }
                                 Text("${geceHours}$hourUnit", fontSize = 14.sp, fontFamily = ProshiftMonoFont, fontWeight = FontWeight.Black, color = dyn.nightShiftText)
                             }
@@ -866,7 +860,7 @@ fun CalendarScreen(
                                         Icon(shiftTypeVector(ShiftType.IZIN), contentDescription = trEn("İzin", "Off"), tint = dyn.offShiftAccent, modifier = Modifier.size(12.dp))
                                         Text(trEn("İzin", "Off"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.offShiftAccent)
                                     }
-                                    Text("(${izinDays.size}$dayShort)", fontSize = 9.sp, color = dyn.textMuted)
+                                    Text("(${izinDays.size}$dayShort)", fontSize = 10.sp, color = dyn.textMuted)
                                 }
                                 Text(
                                     text = if (offOvertimeHours > 0) "+${offOvertimeHours}$hourUnit" else "—",
@@ -1392,11 +1386,6 @@ private fun CalendarGridPillCell(
         modifier = modifier
             .height(64.dp)
             .alpha(if (dimmed) 0.28f else 1f)
-            .then(
-                if (item.type == CellType.TODAY) {
-                    Modifier.shadow(if (dyn.isDark) 10.dp else 6.dp, RoundedCornerShape(12.dp), ambientColor = dyn.primaryNeon, spotColor = dyn.primaryNeon)
-                } else Modifier
-            )
             .clip(RoundedCornerShape(12.dp))
             .background(bgBrush, RoundedCornerShape(12.dp))
             .border(
@@ -1432,7 +1421,7 @@ private fun CalendarGridPillCell(
                     val isEnCell = LocalIsEnglish.current
                     Text(
                         text = "+${overtimeHours.toInt()}${formatHourUnit(isEnCell)}",
-                        fontSize = 7.sp,
+                        fontSize = 8.5.sp,
                         fontFamily = ProshiftMonoFont,
                         fontWeight = FontWeight.Black,
                         color = if (dyn.isDark) Color(0xFF030712) else Color.White
@@ -1462,7 +1451,7 @@ private fun CalendarGridPillCell(
                 )
                 Text(
                     text = item.shiftLabel,
-                    fontSize = 8.sp,
+                    fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
                     color = badgeTextColor,
                     maxLines = 1

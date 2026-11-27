@@ -89,19 +89,11 @@ fun HomeScreen(
                 UserAvatarImage(
                     avatarPath = settings.avatarUriOrPath,
                     contentDescription = trEn("Kullanıcı Profili", "User Profile"),
+                    displayName = settings.employeeName,
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
                         .border(1.5.dp, dyn.borderMetal, CircleShape)
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(10.dp)
-                        .align(Alignment.BottomEnd)
-                        .padding(end = 2.dp, bottom = 2.dp)
-                        .background(dyn.accentCyan, CircleShape)
-                        .border(1.5.dp, dyn.background, CircleShape)
                 )
             }
         }

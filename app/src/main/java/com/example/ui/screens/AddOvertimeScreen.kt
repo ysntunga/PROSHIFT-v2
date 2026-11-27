@@ -35,6 +35,9 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.WorkOutline
+import androidx.compose.material.icons.rounded.EventAvailable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -61,7 +64,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
 import com.example.data.model.ShiftType
-import com.example.ui.theme.BorderSpecularTop
 import com.example.ui.theme.DynamicTheme
 import com.example.ui.viewmodel.AppScreen
 import com.example.ui.viewmodel.ShiftViewModel
@@ -196,6 +198,7 @@ fun AddOvertimeScreen(
                 UserAvatarImage(
                     avatarPath = settings.avatarUriOrPath,
                     contentDescription = trEn("Profil", "Profile"),
+                    displayName = settings.employeeName,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -283,8 +286,13 @@ fun AddOvertimeScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(text = "🏥", fontSize = 12.sp)
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                        Icon(
+                            imageVector = Icons.Filled.WorkOutline,
+                            contentDescription = trEn("Birim", "Department"),
+                            tint = dyn.textSecondary,
+                            modifier = Modifier.size(14.dp)
+                        )
                         Text(
                             text = settings.department,
                             fontSize = 11.sp,
@@ -314,7 +322,12 @@ fun AddOvertimeScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(text = "⚙️", fontSize = 12.sp)
+                    Icon(
+                        imageVector = Icons.Filled.Tune,
+                        contentDescription = null,
+                        tint = dyn.textMuted,
+                        modifier = Modifier.size(14.dp)
+                    )
                     Text(
                         text = trEn("MESAİ / GÖREV MODU", "OVERTIME / DUTY MODE"),
                         fontSize = 10.sp,
@@ -525,7 +538,12 @@ fun AddOvertimeScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = "🎉", fontSize = 16.sp)
+                            Icon(
+                                imageVector = Icons.Rounded.EventAvailable,
+                                contentDescription = trEn("Resmi Tatil", "Public Holiday"),
+                                tint = dyn.eveningShiftAccent,
+                                modifier = Modifier.size(18.dp)
+                            )
                             Box(
                                 modifier = Modifier
                                     .background(dyn.eveningShiftBg, RoundedCornerShape(4.dp))
@@ -852,27 +870,19 @@ fun AddOvertimeScreen(
                         context,
                         trEn(
                             isEn,
-                            "Mesai Kaydedildi: +${selectedDurationHours}s (${selectedDate.format(dateFmt)}) ✅",
-                            "Overtime Saved: +${selectedDurationHours}h (${selectedDate.format(dateFmt)}) ✅"
+                            "Mesai Kaydedildi: +${selectedDurationHours}s (${selectedDate.format(dateFmt)})",
+                            "Overtime Saved: +${selectedDurationHours}h (${selectedDate.format(dateFmt)})"
                         ),
                         Toast.LENGTH_LONG
                     ).show()
                     viewModel.navigateTo(AppScreen.TIMESHEET)
                 }
-                .shadow(if (dyn.isDark) 12.dp else 4.dp, RoundedCornerShape(14.dp), ambientColor = dyn.primaryNeon)
-                .border(1.dp, if (dyn.isDark) BorderSpecularTop else dyn.primaryNeon.copy(alpha = 0.25f), RoundedCornerShape(14.dp))
                 .testTag("btn_save_overtime"),
             shape = RoundedCornerShape(14.dp),
-            color = Color.Transparent
+            color = dyn.primaryDeep
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.horizontalGradient(
-                            colors = listOf(dyn.primaryNeon, dyn.primaryDeep)
-                        )
-                    ),
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Row(

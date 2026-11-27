@@ -84,7 +84,6 @@ import com.example.ui.i18n.formatHourUnit
 import com.example.ui.i18n.formatMonthTitleLocalized
 import com.example.ui.i18n.formatPercent
 import com.example.ui.i18n.trEn
-import com.example.ui.theme.BorderSpecularTop
 import com.example.ui.theme.DynamicTheme
 import com.example.ui.theme.ProshiftMonoFont
 import com.example.ui.theme.WhatsAppGreen
@@ -163,22 +162,19 @@ fun TimesheetScreen(
             // User Avatar Circle
             Box(
                 modifier = Modifier
-                    .size(44.dp)
+                    .size(48.dp)
                     .clip(CircleShape)
-                    .border(2.dp, dyn.primaryNeon, CircleShape)
-                    .clickable { viewModel.navigateTo(AppScreen.PROFILE) }
+                    .clickable { viewModel.navigateTo(AppScreen.PROFILE) },
+                contentAlignment = Alignment.Center
             ) {
                 UserAvatarImage(
                     avatarPath = settings.avatarUriOrPath,
                     contentDescription = trEn("Profil", "Profile"),
-                    modifier = Modifier.fillMaxSize()
-                )
-                Box(
+                    displayName = settings.employeeName,
                     modifier = Modifier
-                        .size(10.dp)
-                        .background(dyn.accentCyan, CircleShape)
-                        .border(1.5.dp, dyn.background, CircleShape)
-                        .align(Alignment.BottomEnd)
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .border(1.5.dp, dyn.borderMetal, CircleShape)
                 )
             }
         }
@@ -299,7 +295,7 @@ fun TimesheetScreen(
                     ) {
                         Text(
                             text = trEn("TOPLAM", "TOTAL"),
-                            fontSize = 9.sp,
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = dyn.textMuted,
                             letterSpacing = 0.5.sp
@@ -335,7 +331,7 @@ fun TimesheetScreen(
                     ) {
                         Text(
                             text = trEn("HEDEF: ${stats.targetWorkHours.toInt()}s", "TARGET: ${stats.targetWorkHours.toInt()}h"),
-                            fontSize = 9.sp,
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = dyn.dayShiftAccent
                         )
@@ -359,7 +355,7 @@ fun TimesheetScreen(
                     ) {
                         Text(
                             text = trEn("GECE", "NIGHT"),
-                            fontSize = 9.sp,
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = dyn.textMuted,
                             letterSpacing = 0.5.sp
@@ -395,7 +391,7 @@ fun TimesheetScreen(
                     ) {
                         Text(
                             text = trEn("%50 EK PRİM", "+50% NIGHT"),
-                            fontSize = 9.sp,
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = dyn.nightShiftAccent
                         )
@@ -419,7 +415,7 @@ fun TimesheetScreen(
                     ) {
                         Text(
                             text = trEn("FAZLA M.", "OVERTIME"),
-                            fontSize = 9.sp,
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = dyn.textMuted,
                             letterSpacing = 0.5.sp
@@ -455,7 +451,7 @@ fun TimesheetScreen(
                     ) {
                         Text(
                             text = trEn("1.5X KATSAYI", "1.5X RATE"),
-                            fontSize = 9.sp,
+                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
                             color = dyn.eveningShiftAccent
                         )
@@ -787,21 +783,16 @@ fun TimesheetScreen(
 
                 // Button 1: Resmi Çizelge (PDF)
                 Surface(
+                    onClick = { viewModel.openPdfPreviewDialog() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .clickable { viewModel.openPdfPreviewDialog() }
-                        .shadow(if (dyn.isDark) 8.dp else 4.dp, RoundedCornerShape(12.dp), ambientColor = dyn.primaryNeon)
-                        .border(1.dp, if (dyn.isDark) BorderSpecularTop else dyn.primaryNeon.copy(alpha = 0.25f), RoundedCornerShape(12.dp))
                         .testTag("btn_official_pdf"),
                     shape = RoundedCornerShape(12.dp),
-                    color = Color.Transparent
+                    color = dyn.primaryDeep
                 ) {
                     Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(dyn.actionGradientBrush),
+                        modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
                         Row(
@@ -893,21 +884,14 @@ fun TimesheetScreen(
 
                 // Button 3: WhatsApp ile Gönder
                 Surface(
+                    onClick = { viewModel.shareViaWhatsApp() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(
-                            Brush.horizontalGradient(
-                                colors = listOf(dyn.emeraldBg, dyn.surfaceElevated)
-                            ),
-                            RoundedCornerShape(12.dp)
-                        )
                         .border(1.dp, dyn.emeraldBorder, RoundedCornerShape(12.dp))
-                        .clickable { viewModel.shareViaWhatsApp() }
                         .testTag("btn_share_whatsapp_timesheet"),
                     shape = RoundedCornerShape(12.dp),
-                    color = Color.Transparent
+                    color = dyn.emeraldBg
                 ) {
                     Row(
                         modifier = Modifier
@@ -1038,7 +1022,7 @@ fun TimesheetScreen(
                 ) {
                     Text(
                         text = trEn("KULLANIM ORANI", "USAGE RATE"),
-                        fontSize = 9.sp,
+                        fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
                         color = dyn.textMuted,
                         letterSpacing = 0.5.sp
@@ -1083,7 +1067,7 @@ fun TimesheetScreen(
                             modifier = Modifier.padding(10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = trEn("YILLIK HAK", "ANNUAL"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
+                            Text(text = trEn("YILLIK HAK", "ANNUAL"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
                             Spacer(modifier = Modifier.height(2.dp))
                             Row(verticalAlignment = Alignment.Bottom) {
                                 Text(
@@ -1114,7 +1098,7 @@ fun TimesheetScreen(
                             modifier = Modifier.padding(10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = trEn("KULLANILAN", "USED"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
+                            Text(text = trEn("KULLANILAN", "USED"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
                             Spacer(modifier = Modifier.height(2.dp))
                             Row(verticalAlignment = Alignment.Bottom) {
                                 Text(
@@ -1145,7 +1129,7 @@ fun TimesheetScreen(
                             modifier = Modifier.padding(10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = trEn("KALAN BAKİYE", "REMAINING"), fontSize = 9.sp, fontWeight = FontWeight.Bold, color = dyn.dayShiftAccent)
+                            Text(text = trEn("KALAN BAKİYE", "REMAINING"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.dayShiftAccent)
                             Spacer(modifier = Modifier.height(2.dp))
                             Row(verticalAlignment = Alignment.Bottom) {
                                 Text(

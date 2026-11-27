@@ -87,7 +87,6 @@ import com.example.data.model.ShiftType
 import com.example.ui.components.CustomCycleBuilderSheet
 import com.example.ui.components.ProShiftLogo
 import com.example.ui.components.ProShiftLogoVariant
-import com.example.ui.theme.BorderSpecularTop
 import com.example.ui.theme.DepartmentColorResolver
 import com.example.ui.theme.DynamicTheme
 import com.example.ui.i18n.LocalAppLocale
@@ -1108,16 +1107,12 @@ fun OnboardingScreen(
                             ).show()
                         }
                     }
-                    .shadow(12.dp, RoundedCornerShape(16.dp), ambientColor = dyn.primaryNeon)
-                    .border(1.dp, if (dyn.isDark) BorderSpecularTop else Color.Transparent, RoundedCornerShape(16.dp))
                     .testTag("onboarding_complete_button"),
                 shape = RoundedCornerShape(16.dp),
-                color = Color.Transparent
+                color = dyn.primaryDeep
             ) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Brush.horizontalGradient(listOf(dyn.primaryNeon, dyn.primaryDeep))),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Row(

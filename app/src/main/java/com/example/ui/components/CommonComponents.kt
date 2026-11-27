@@ -1,12 +1,17 @@
 package com.example.ui.components
 
-import android.os.Build
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +27,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -39,6 +43,7 @@ import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material.icons.rounded.LocalCafe
 import androidx.compose.material.icons.rounded.LocalHospital
 import androidx.compose.material.icons.rounded.NightsStay
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Shield
 import androidx.compose.material.icons.rounded.WbSunny
 import androidx.compose.material.icons.rounded.WbTwilight
@@ -60,66 +65,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
-import androidx.compose.foundation.Image
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import com.example.R
 import com.example.data.model.ShiftDay
 import com.example.data.model.ShiftType
+import com.example.ui.theme.DynamicTheme
+import com.example.ui.theme.ShiftOvertimeAmber
 import java.io.File
 import java.io.FileOutputStream
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.unit.Dp
-import com.example.ui.theme.ProshiftMonoFont
-import com.example.ui.theme.TitaniumBrushedBrush
-import com.example.ui.theme.TitaniumElevatedBrush
-import com.example.ui.theme.AccentCyan
-import com.example.ui.theme.BackgroundTitanium
-import com.example.ui.theme.BorderGlow
-import com.example.ui.theme.BorderMetal
-import com.example.ui.theme.BorderSpecularTop
-import com.example.ui.theme.BorderSubtle
-import com.example.ui.theme.DynamicTheme
-import com.example.ui.theme.PrimaryDeep
-import com.example.ui.theme.PrimaryMetallic
-import com.example.ui.theme.PrimaryNeon
-import com.example.ui.theme.ShiftGece
-import com.example.ui.theme.ShiftGeceBg
-import com.example.ui.theme.ShiftGeceBorder
-import com.example.ui.theme.ShiftGunduz
-import com.example.ui.theme.ShiftGunduzBg
-import com.example.ui.theme.ShiftGunduzBorder
-import com.example.ui.theme.ShiftIzin
-import com.example.ui.theme.ShiftIzinBg
-import com.example.ui.theme.ShiftIzinBorder
-import com.example.ui.theme.ShiftOvertimeAmber
-import com.example.ui.theme.ShiftOvertimeBg
-import com.example.ui.theme.ShiftOvertimeBorder
-import com.example.ui.theme.ShiftRapor
-import com.example.ui.theme.ShiftRaporBg
-import com.example.ui.theme.SurfaceCard
-import com.example.ui.theme.SurfaceElevated
-import com.example.ui.theme.SurfaceHighlight
-import com.example.ui.theme.SurfacePanel
-import com.example.ui.theme.TextMuted
-import com.example.ui.theme.TextPrimary
-import com.example.ui.theme.TextSecondary
 import com.example.ui.i18n.LocalAppLocale
 import com.example.ui.i18n.LocalIsEnglish
 import com.example.ui.i18n.formatHourUnit
@@ -150,47 +114,33 @@ fun Modifier.titaniumBrushedSurface(
 ): Modifier = this
     .clip(shape)
     .background(
-        if (elevated) DynamicTheme.colors.elevatedSurfaceBrush else DynamicTheme.colors.brushedSurfaceBrush,
-        shape
+        color = if (elevated) DynamicTheme.colors.surfaceElevated else DynamicTheme.colors.surfaceCard,
+        shape = shape
     )
     .border(
         width = borderWidth,
-        brush = Brush.verticalGradient(
-            colors = listOf(
-                borderColor.copy(alpha = (borderColor.alpha * 1.45f).coerceAtMost(0.95f)),
-                borderColor,
-                borderColor.copy(alpha = (borderColor.alpha * 0.55f).coerceAtLeast(0.08f))
-            )
-        ),
+        color = borderColor,
         shape = shape
     )
 
 @Composable
 fun Modifier.ultraThinFrostedSurface(
-    shape: Shape = RoundedCornerShape(32.dp),
+    shape: Shape = RoundedCornerShape(28.dp),
     borderWidth: Dp = 1.dp
-): Modifier = this
-    .clip(shape)
-    .background(
-        brush = Brush.verticalGradient(
-            colors = listOf(
-                DynamicTheme.colors.surfaceElevated.copy(alpha = 0.72f),
-                DynamicTheme.colors.surfaceCard.copy(alpha = 0.84f)
-            )
-        ),
-        shape = shape
-    )
-    .border(
-        width = borderWidth,
-        brush = Brush.verticalGradient(
-            colors = listOf(
-                DynamicTheme.colors.borderMetal,
-                DynamicTheme.colors.borderSubtle,
-                DynamicTheme.colors.primaryNeon.copy(alpha = 0.08f)
-            )
-        ),
-        shape = shape
-    )
+): Modifier {
+    val dyn = DynamicTheme.colors
+    return this
+        .clip(shape)
+        .background(
+            color = if (dyn.isDark) dyn.surfaceCard.copy(alpha = 0.96f) else dyn.surfaceCard.copy(alpha = 0.98f),
+            shape = shape
+        )
+        .border(
+            width = borderWidth,
+            color = dyn.borderSubtle,
+            shape = shape
+        )
+}
 
 @Composable
 fun FloatingDockBottomNav(
@@ -198,7 +148,7 @@ fun FloatingDockBottomNav(
     onNavigate: (AppScreen) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val dockShape = RoundedCornerShape(32.dp)
+    val dockShape = RoundedCornerShape(28.dp)
     val dyn = DynamicTheme.colors
     Box(
         modifier = modifier
@@ -212,32 +162,13 @@ fun FloatingDockBottomNav(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(66.dp)
-                .shadow(elevation = 24.dp, shape = dockShape, ambientColor = dyn.primaryNeon.copy(alpha = 0.25f))
+                .height(64.dp)
+                .shadow(
+                    elevation = if (dyn.isDark) 8.dp else 6.dp,
+                    shape = dockShape
+                )
                 .ultraThinFrostedSurface(shape = dockShape)
         ) {
-            // GPU-accelerated frosted reflection sheen behind crisp foreground navigation items
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .then(
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            Modifier.blur(18.dp, edgeTreatment = BlurredEdgeTreatment(dockShape))
-                        } else {
-                            Modifier
-                        }
-                    )
-                    .background(
-                        Brush.horizontalGradient(
-                            colors = listOf(
-                                dyn.primaryNeon.copy(alpha = 0.09f),
-                                dyn.surfaceHighlight.copy(alpha = 0.24f),
-                                dyn.primaryDeep.copy(alpha = 0.13f)
-                            )
-                        )
-                    )
-            )
-
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -304,29 +235,19 @@ private fun DockNavItem(
         targetValue = if (isSelected) dyn.primaryNeon else dyn.textMuted,
         label = "tint"
     )
-    val pillShape = RoundedCornerShape(22.dp)
+    val pillShape = RoundedCornerShape(20.dp)
 
     Box(
         modifier = Modifier
             .minimumInteractiveComponentSize()
+            .clip(pillShape)
             .then(
                 if (isSelected) {
                     Modifier
-                        .clip(pillShape)
-                        .background(
-                            Brush.verticalGradient(
-                                colors = if (dyn.isDark) {
-                                    listOf(dyn.primaryDeep.copy(alpha = 0.34f), dyn.surfaceElevated.copy(alpha = 0.9f))
-                                } else {
-                                    listOf(dyn.primaryNeon.copy(alpha = 0.14f), dyn.surfaceElevated.copy(alpha = 0.95f))
-                                }
-                            )
-                        )
-                        .border(1.dp, dyn.primaryNeon.copy(alpha = 0.45f), pillShape)
-                        .padding(horizontal = 10.dp, vertical = 6.dp)
+                        .background(dyn.primaryNeon.copy(alpha = if (dyn.isDark) 0.16f else 0.12f))
+                        .padding(horizontal = 11.dp, vertical = 6.dp)
                 } else {
                     Modifier
-                        .clip(pillShape)
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 }
             )
@@ -347,7 +268,7 @@ private fun DockNavItem(
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = title,
-                fontSize = 9.5.sp,
+                fontSize = 10.5.sp,
                 maxLines = 1,
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                 color = tintColor
@@ -456,9 +377,9 @@ fun DayInspectorDialog(
                             .padding(horizontal = 8.dp, vertical = 3.dp)
                     ) {
                         Text(
-                            text = if (day.isHalfDayHoliday) "🏛️ ${day.holidayName} (${trEn("Yarım Gün", "Half Day")})" else "🏛️ ${day.holidayName}",
+                            text = if (day.isHalfDayHoliday) "${day.holidayName} (${trEn("Yarım Gün", "Half Day")})" else day.holidayName,
                             color = dyn.emeraldAccent,
-                            fontSize = 10.sp,
+                            fontSize = 11.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -524,7 +445,7 @@ fun DayInspectorDialog(
                                         )
                                         Text(
                                             text = if (t.isWork) "${defS.take(2)}-${defE.take(2)}" else trEn("Boş", "Off"),
-                                            fontSize = 8.sp,
+                                            fontSize = 10.sp,
                                             color = if (isChosen) dyn.accentCyan else dyn.textMuted,
                                             maxLines = 1
                                         )
@@ -558,7 +479,7 @@ fun DayInspectorDialog(
                                 .padding(horizontal = 10.dp, vertical = 8.dp)
                         ) {
                             Column {
-                                Text(trEn("Başlangıç", "Start"), fontSize = 9.sp, color = dyn.textMuted)
+                                Text(trEn("Başlangıç", "Start"), fontSize = 10.sp, color = dyn.textMuted)
                                 Text(
                                     text = startTimeText.ifBlank { selectedType.defaultStart },
                                     fontSize = 13.sp,
@@ -577,7 +498,7 @@ fun DayInspectorDialog(
                                 .padding(horizontal = 10.dp, vertical = 8.dp)
                         ) {
                             Column {
-                                Text(trEn("Bitiş", "End"), fontSize = 9.sp, color = dyn.textMuted)
+                                Text(trEn("Bitiş", "End"), fontSize = 10.sp, color = dyn.textMuted)
                                 Text(
                                     text = endTimeText.ifBlank { selectedType.defaultEnd },
                                     fontSize = 13.sp,
@@ -841,12 +762,34 @@ fun ShiftNoteDialog(
     )
 }
 
+private fun extractAvatarInitials(displayName: String): String {
+    val ignoredPrefixes = setOf("dr.", "dr", "uzm.", "uzm", "prof.", "prof", "doç.", "doc.", "hem.", "sn.")
+    val tokens = displayName
+        .trim()
+        .split(Regex("\\s+"))
+        .filter { it.isNotBlank() && it.lowercase() !in ignoredPrefixes }
+    if (tokens.isEmpty()) return ""
+    val first = tokens.first().firstOrNull { it.isLetterOrDigit() }?.uppercaseChar()
+    val second = if (tokens.size >= 2) {
+        tokens.last().firstOrNull { it.isLetterOrDigit() }?.uppercaseChar()
+    } else {
+        tokens.first().drop(1).firstOrNull { it.isLetterOrDigit() }?.uppercaseChar()
+    }
+    return buildString {
+        if (first != null) append(first)
+        if (second != null) append(second)
+    }
+}
+
 @Composable
 fun UserAvatarImage(
     avatarPath: String,
     contentDescription: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    displayName: String = "",
+    accentColor: Color? = null
 ) {
+    val dyn = DynamicTheme.colors
     val customBitmap = remember(avatarPath) {
         if (avatarPath.isNotBlank() && !avatarPath.startsWith("preset:")) {
             try {
@@ -866,16 +809,43 @@ fun UserAvatarImage(
             modifier = modifier
         )
     } else {
-        val drawableId = when (avatarPath) {
-            "preset:kaan" -> R.drawable.doctor_kaan_avatar_1794486160219
-            else -> R.drawable.proshift_user_avatar_1794484704001
+        val primaryTint = accentColor ?: dyn.accentCyan
+        val secondaryTint = if (accentColor != null) dyn.accentCyan else dyn.nightShiftAccent
+        val initials = remember(displayName) { extractAvatarInitials(displayName) }
+        val bgBrush = remember(primaryTint, secondaryTint, dyn.isDark) {
+            Brush.linearGradient(
+                colors = listOf(
+                    primaryTint.copy(alpha = if (dyn.isDark) 0.24f else 0.16f),
+                    secondaryTint.copy(alpha = if (dyn.isDark) 0.16f else 0.10f)
+                )
+            )
         }
-        Image(
-            painter = painterResource(id = drawableId),
-            contentDescription = contentDescription,
-            contentScale = ContentScale.Crop,
+        BoxWithConstraints(
             modifier = modifier
-        )
+                .background(dyn.surfaceElevated)
+                .background(bgBrush),
+            contentAlignment = Alignment.Center
+        ) {
+            val minSide = if (maxWidth < maxHeight) maxWidth else maxHeight
+            if (initials.isNotEmpty()) {
+                val textSp = (minSide.value * 0.36f).coerceIn(11f, 34f).sp
+                Text(
+                    text = initials,
+                    fontSize = textSp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = primaryTint,
+                    letterSpacing = 0.5.sp,
+                    maxLines = 1
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Rounded.Person,
+                    contentDescription = contentDescription,
+                    tint = primaryTint,
+                    modifier = Modifier.size((minSide * 0.56f).coerceIn(16.dp, 54.dp))
+                )
+            }
+        }
     }
 }
 

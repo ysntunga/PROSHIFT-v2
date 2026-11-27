@@ -203,7 +203,7 @@ fun ProfileScreen(
                         color = dyn.textPrimary
                     )
                     Text(
-                        text = "${activeGroup.emoji} ${activeGroup.localizedName(isEn).uppercase(appLocale)}",
+                        text = activeGroup.localizedName(isEn).uppercase(appLocale),
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
                         color = dyn.accentCyan,
@@ -262,6 +262,7 @@ fun ProfileScreen(
                         UserAvatarImage(
                             avatarPath = settings.avatarUriOrPath,
                             contentDescription = settings.employeeName,
+                            displayName = settings.employeeName,
                             modifier = Modifier.fillMaxSize()
                         )
                     }
@@ -1286,57 +1287,6 @@ fun ProfileScreen(
                         }
                     }
 
-                    Text(trEn(isEn, "HAZIR AVATARLAR", "PRESET AVATARS"), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = dyn.textMuted)
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        listOf(
-                            "" to trEn(isEn, "Operatör", "Operator"),
-                            "preset:kaan" to trEn(isEn, "Klinik Uzmanı", "Clinician")
-                        ).forEach { (presetKey, label) ->
-                            val isSel = settings.avatarUriOrPath == presetKey
-                            Surface(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .clickable {
-                                        viewModel.updateSettings(settings.copy(avatarUriOrPath = presetKey))
-                                        showAvatarSheet = false
-                                    }
-                                    .border(1.dp, if (isSel) dyn.accentCyan else dyn.borderSubtle, RoundedCornerShape(12.dp)),
-                                shape = RoundedCornerShape(12.dp),
-                                color = if (isSel) dyn.activeChipBg else dyn.surfaceElevated
-                            ) {
-                                Column(
-                                    modifier = Modifier.padding(10.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.spacedBy(6.dp)
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(52.dp)
-                                            .clip(CircleShape)
-                                            .border(1.5.dp, if (isSel) dyn.accentCyan else dyn.borderMetal, CircleShape)
-                                    ) {
-                                        UserAvatarImage(
-                                            avatarPath = presetKey,
-                                            contentDescription = label,
-                                            modifier = Modifier.fillMaxSize()
-                                        )
-                                    }
-                                    Text(
-                                        text = label,
-                                        fontSize = 11.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = if (isSel) dyn.accentCyan else dyn.textPrimary
-                                    )
-                                }
-                            }
-                        }
-                    }
-
                     if (settings.avatarUriOrPath.isNotBlank()) {
                         Surface(
                             modifier = Modifier
@@ -1347,7 +1297,8 @@ fun ProfileScreen(
                                     viewModel.updateSettings(settings.copy(avatarUriOrPath = ""))
                                     showAvatarSheet = false
                                 }
-                                .border(1.dp, dyn.borderSubtle, RoundedCornerShape(12.dp)),
+                                .border(1.dp, dyn.borderSubtle, RoundedCornerShape(12.dp))
+                                .testTag("dialog_remove_profile_avatar"),
                             shape = RoundedCornerShape(12.dp),
                             color = dyn.surfaceElevated
                         ) {
@@ -1358,7 +1309,7 @@ fun ProfileScreen(
                             ) {
                                 Icon(Icons.Filled.RestartAlt, contentDescription = null, tint = dyn.textSecondary, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text(trEn(isEn, "Varsayılan Avatara Sıfırla", "Reset to Default Avatar"), color = dyn.textSecondary, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                                Text(trEn(isEn, "Fotoğrafı Kaldır", "Remove Photo"), color = dyn.textSecondary, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                             }
                         }
                     }

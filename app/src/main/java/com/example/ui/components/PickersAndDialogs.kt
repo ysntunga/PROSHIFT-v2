@@ -1014,6 +1014,7 @@ fun EditProfileSheet(
                         UserAvatarImage(
                             avatarPath = avatarPath,
                             contentDescription = trEn(isEn, "Profil Fotoğrafı", "Profile Photo"),
+                            displayName = name,
                             modifier = Modifier.fillMaxSize()
                         )
                     }
@@ -1058,7 +1059,7 @@ fun EditProfileSheet(
                                     Box(contentAlignment = Alignment.Center) {
                                         Icon(
                                             Icons.Filled.RestartAlt,
-                                            contentDescription = trEn(isEn, "Varsayılana Dön", "Reset to Default"),
+                                            contentDescription = trEn(isEn, "Fotoğrafı Kaldır", "Remove Photo"),
                                             tint = dyn.textSecondary,
                                             modifier = Modifier.size(18.dp)
                                         )

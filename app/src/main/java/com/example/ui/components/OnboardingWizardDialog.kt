@@ -36,6 +36,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.Icon
@@ -449,20 +450,31 @@ fun OnboardingWizardDialog(
                                                 }
                                             }
                                             if (previewSeq.size > 8) {
-                                                Text(trEn("+${previewSeq.size - 8}g", "+${previewSeq.size - 8}d"), fontSize = 9.sp, color = dyn.textMuted, fontWeight = FontWeight.Bold)
+                                                Text(trEn("+${previewSeq.size - 8}g", "+${previewSeq.size - 8}d"), fontSize = 10.sp, color = dyn.textMuted, fontWeight = FontWeight.Bold)
                                             }
                                             Spacer(modifier = Modifier.weight(1f))
-                                            Text(trEn("${previewSeq.size} Günlük", "${previewSeq.size}-Day"), fontSize = 9.sp, color = dyn.textMuted)
+                                            Text(trEn("${previewSeq.size} Günlük", "${previewSeq.size}-Day"), fontSize = 10.sp, color = dyn.textMuted)
                                         }
                                     }
 
                                     val notice = preset.localizedNotice(isEn)
                                     if (isChosen && notice != null) {
-                                        Text(
-                                            text = "⚠️ $notice",
-                                            fontSize = 10.sp,
-                                            color = dyn.eveningShiftText
-                                        )
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Filled.Info,
+                                                contentDescription = null,
+                                                tint = dyn.eveningShiftText,
+                                                modifier = Modifier.size(14.dp)
+                                            )
+                                            Text(
+                                                text = notice,
+                                                fontSize = 11.sp,
+                                                color = dyn.eveningShiftText
+                                            )
+                                        }
                                     }
                                 }
                             }

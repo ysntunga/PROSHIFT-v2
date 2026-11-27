@@ -31,7 +31,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Download
@@ -77,8 +79,8 @@ import com.example.ui.i18n.formatHourUnit
 import com.example.ui.i18n.formatMonthTitleLocalized
 import com.example.ui.i18n.localizedTitle
 import com.example.ui.i18n.trEn
-import com.example.ui.theme.BorderSpecularTop
 import com.example.ui.theme.DynamicTheme
+import com.example.ui.theme.WhatsAppGreen
 import com.example.ui.viewmodel.ShiftViewModel
 import java.io.File
 import java.util.Locale
@@ -692,9 +694,20 @@ fun PdfPreviewSheet(
                     shape = RoundedCornerShape(10.dp),
                     color = if (includeNotes) dyn.activeChipBg else dyn.surfaceElevated
                 ) {
-                    Box(contentAlignment = Alignment.Center) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)
+                    ) {
+                        if (includeNotes) {
+                            Icon(
+                                imageVector = Icons.Filled.Check,
+                                contentDescription = null,
+                                tint = dyn.accentCyan,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
                         Text(
-                            text = if (includeNotes) trEn("✓ Notlar", "✓ Notes") else trEn("○ Notlar", "○ Notes"),
+                            text = trEn("Notlar", "Notes"),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             color = if (includeNotes) dyn.accentCyan else dyn.textSecondary
@@ -713,9 +726,20 @@ fun PdfPreviewSheet(
                     shape = RoundedCornerShape(10.dp),
                     color = if (includeBarcode) dyn.activeChipBg else dyn.surfaceElevated
                 ) {
-                    Box(contentAlignment = Alignment.Center) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)
+                    ) {
+                        if (includeBarcode) {
+                            Icon(
+                                imageVector = Icons.Filled.Check,
+                                contentDescription = null,
+                                tint = dyn.accentCyan,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
                         Text(
-                            text = if (includeBarcode) trEn("✓ Barkod", "✓ Barcode") else trEn("○ Barkod", "○ Barcode"),
+                            text = trEn("Barkod", "Barcode"),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             color = if (includeBarcode) dyn.accentCyan else dyn.textSecondary
@@ -734,9 +758,20 @@ fun PdfPreviewSheet(
                     shape = RoundedCornerShape(10.dp),
                     color = if (includeQr) dyn.activeChipBg else dyn.surfaceElevated
                 ) {
-                    Box(contentAlignment = Alignment.Center) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)
+                    ) {
+                        if (includeQr) {
+                            Icon(
+                                imageVector = Icons.Filled.Check,
+                                contentDescription = null,
+                                tint = dyn.accentCyan,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
                         Text(
-                            text = if (includeQr) trEn("✓ QR Kod", "✓ QR Code") else trEn("○ QR Kod", "○ QR Code"),
+                            text = trEn("QR Kod", "QR Code"),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
                             color = if (includeQr) dyn.accentCyan else dyn.textSecondary
@@ -872,16 +907,12 @@ fun PdfPreviewSheet(
                             }
                         }
                     }
-                    .shadow(12.dp, RoundedCornerShape(14.dp), ambientColor = dyn.primaryNeon)
-                    .border(1.dp, BorderSpecularTop, RoundedCornerShape(14.dp))
                     .testTag("btn_download_pdf"),
                 shape = RoundedCornerShape(14.dp),
-                color = Color.Transparent
+                color = dyn.primaryDeep
             ) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Brush.horizontalGradient(listOf(dyn.primaryNeon, dyn.primaryDeep))),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     Row(
@@ -1019,7 +1050,12 @@ fun PdfPreviewSheet(
                         modifier = Modifier.padding(vertical = 10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "💬", fontSize = 16.sp)
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Chat,
+                            contentDescription = "WhatsApp",
+                            tint = WhatsAppGreen,
+                            modifier = Modifier.size(18.dp)
+                        )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(text = "WhatsApp", fontSize = 11.sp, color = dyn.textPrimary)
                     }
